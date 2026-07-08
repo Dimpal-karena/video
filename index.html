@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iBanPay - Programmatic Motion Video</title>
+    <title>Autodots Video Generation System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #000000;
+            background-color: #020202;
             color: #ffffff;
-            overflow: hidden;
             margin: 0;
             padding: 0;
             width: 100vw;
             height: 100vh;
+            overflow: hidden;
             user-select: none;
         }
 
-        /* 16:9 Production Video Canvas Viewport Container */
+        /* 16:9 Production Video Master Canvas Viewport Box */
         #video-canvas {
             position: relative;
             width: 100%;
@@ -34,558 +34,644 @@
             aspect-ratio: 16 / 9;
             margin: 0 auto;
             overflow: hidden;
-            background: radial-gradient(circle at 50% 50%, #2e1065 0%, #090514 100%);
+            background-color: #050505;
         }
 
-        /* Luxury Tech Utility Properties */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        /* Luxury Tech System Overrides */
+        .glass-ui {
+            background: rgba(15, 15, 15, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .glow-purple {
-            box-shadow: 0 0 40px rgba(147, 51, 234, 0.3);
+        .border-neon {
+            border-color: rgba(34, 197, 94, 0.4);
         }
 
-        .glow-green {
-            box-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
+        .bg-neon {
+            background-color: #22c55e;
         }
 
-        /* Custom text-cursor style animation */
-        .custom-cursor::after {
+        .text-neon {
+            color: #22c55e;
+        }
+
+        .glow-neon-text {
+            text-shadow: 0 0 12px rgba(34, 197, 94, 0.5);
+        }
+
+        .glow-neon-ui {
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.2);
+        }
+
+        /* Standard blinking cursor definition */
+        .typing-cursor::after {
             content: '|';
-            animation: blink 0.8s infinite;
+            color: #22c55e;
+            animation: blink 0.7s infinite steps(2);
         }
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
+        
+        .mono-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen">
 
-    <div id="video-canvas" class="relative shadow-2xl">
-        
+    <div id="video-canvas" class="shadow-2xl">
         <div id="camera-rig" class="w-full h-full absolute top-0 left-0 transition-transform origin-center">
             
-            <div id="brand-logo" class="absolute top-8 left-12 opacity-0 z-50 flex items-center space-x-2">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-purple-400">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
-                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <div id="scene-search" class="absolute inset-0 flex flex-col items-center justify-center z-10">
+                <div id="search-box-container" class="w-[650px] bg-[#1f2023] rounded-full px-6 py-4 border border-zinc-800 flex items-center space-x-4 shadow-xl">
+                    <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <div id="search-text" class="text-lg text-zinc-100 font-light typing-cursor min-w-[10px]"></div>
+                </div>
+
+                <div id="search-dropdown" class="w-[650px] bg-[#1f2023] rounded-2xl mt-3 p-4 border border-zinc-800 shadow-2xl opacity-0 transform -translate-y-4 space-y-3">
+                    <div class="text-sm font-medium text-neon flex items-center space-x-2"><span>📍</span> <span>Your Garage — Scheduled Match</span></div>
+                    <div class="text-sm text-zinc-400 border-t border-zinc-800 pt-2">Apex Auto Care</div>
+                    <div class="text-sm text-zinc-400 border-t border-zinc-800 pt-2">Precision Motors</div>
+                </div>
+
+                <div id="legacy-stack" class="absolute left-10 top-24 w-80 space-y-4 opacity-0 transform -translate-x-12">
+                    <div class="bg-zinc-900 border border-red-900/40 p-4 rounded-xl shadow-lg">
+                        <div class="text-xs text-red-400 font-bold uppercase tracking-wider mb-2">⚠️ Warning: Pending Jobs</div>
+                        <div class="h-2 w-full bg-zinc-800 rounded mb-1"></div>
+                        <div class="h-2 w-3/4 bg-zinc-800 rounded"></div>
+                    </div>
+                    <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl shadow-lg">
+                        <div class="text-xs text-zinc-500 font-bold uppercase mb-1">Unassigned Tickets</div>
+                        <div class="text-xl font-bold text-zinc-300">14 Overdue</div>
+                    </div>
+                    <div class="bg-zinc-900 border border-red-900/40 p-3 rounded-xl flex justify-between items-center text-xs">
+                        <span class="text-zinc-400">Part Out of Stock</span>
+                        <span class="px-2 py-0.5 bg-red-950 text-red-400 font-mono rounded">BMW Alternator</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="scene-loss" class="absolute inset-0 flex items-center justify-between px-24 z-20 opacity-0 pointer-events-none">
+                <div class="w-1/2 space-y-4">
+                    <h2 class="text-4xl font-light text-zinc-400">Workshop Operational Loop</h2>
+                    <h1 class="text-6xl font-extrabold tracking-tight text-white uppercase">Your Garage</h1>
+                    <div id="loss-indicators" class="space-y-3 mt-6">
+                        <div class="text-xl text-red-500 font-medium tracking-wide flex items-center space-x-2"><span>✕</span> <span>Unoptimized Schedule</span></div>
+                        <div class="text-xl text-red-500 font-medium tracking-wide flex items-center space-x-2"><span>✕</span> <span>Lost Revenue</span></div>
+                    </div>
+                </div>
+
+                <div id="chaos-orbit-wrapper" class="w-1/2 h-full relative flex items-center justify-center">
+                    <div class="w-48 h-48 rounded-full border border-zinc-800 flex items-center justify-center bg-zinc-950/80 z-10 text-center p-4">
+                        <span class="text-sm font-semibold tracking-wide text-zinc-400">Legacy Status</span>
+                    </div>
+                    <div class="chaos-node absolute w-12 h-12 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center text-lg" style="top:15%; left:20%;">💬</div>
+                    <div class="chaos-node absolute w-12 h-12 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center text-lg" style="top:20%; right:15%;">📊</div>
+                    <div class="chaos-node absolute w-12 h-12 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center text-lg" style="bottom:15%; left:30%;">📄</div>
+                    <div class="chaos-node absolute w-12 h-12 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center text-lg" style="bottom:25%; right:20%;">📞</div>
+                </div>
+            </div>
+
+            <div id="scene-thoughts" class="absolute inset-0 flex flex-col items-center justify-center z-30 opacity-0 pointer-events-none">
+                <div id="owner-avatar" class="w-40 h-40 rounded-full border-4 border-zinc-800 bg-zinc-900 overflow-hidden relative flex items-center justify-center mb-8">
+                    <span class="text-6xl">🤯</span>
+                </div>
+                
+                <div id="thought-bubbles-container" class="absolute inset-0 pointer-events-none">
+                    <div class="thought-bubble absolute glass-ui px-4 py-2.5 rounded-2xl text-sm font-medium text-zinc-200" style="top: 25%; left: 18%;">"Track mechanic hours?"</div>
+                    <div class="thought-bubble absolute glass-ui px-4 py-2.5 rounded-2xl text-sm font-medium text-zinc-200" style="top: 18%; right: 20%;">"Where is that BMW alternator?"</div>
+                    <div class="thought-bubble absolute glass-ui px-4 py-2.5 rounded-2xl text-sm font-medium text-zinc-200" style="bottom: 30%; left: 25%;">"Paperwork is piling up..."</div>
+                </div>
+
+                <div id="invoice-crop-box" class="w-[440px] bg-white text-zinc-900 p-6 rounded-2xl shadow-2xl space-y-4 absolute opacity-0 transform scale-75">
+                    <div class="flex justify-between items-center border-b border-zinc-200 pb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-zinc-400">Legacy Software Co.</span>
+                        <span class="text-xs font-mono">INV-98211</span>
+                    </div>
+                    <div class="space-y-2 text-sm font-medium">
+                        <div class="flex justify-between"><span>Monthly Subscription</span><span>$1,200</span></div>
+                        <div class="flex justify-between text-red-600"><span>System Downtime (4 Hours)</span><span>+$450</span></div>
+                    </div>
+                    <div class="border-t-2 border-dashed border-zinc-200 pt-4 flex justify-between items-baseline">
+                        <span class="text-sm font-bold uppercase">Total Lost Revenue</span>
+                        <span id="tally-number" class="text-3xl font-black tracking-tight text-red-600 mono-font">$1,441</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="scene-reveal" class="absolute inset-0 flex flex-col items-center justify-center z-40 opacity-0 pointer-events-none">
+                <svg class="absolute inset-0 w-full h-full opacity-20 pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <line x1="0" y1="20" x2="100" y2="80" stroke="#22c55e" stroke-width="0.3"/>
+                    <line x1="100" y1="10" x2="0" y2="90" stroke="#22c55e" stroke-width="0.3"/>
                 </svg>
-                <span class="text-sm font-semibold tracking-widest text-neutral-300 uppercase">zelios</span>
+                <h1 id="reveal-title" class="text-8xl font-black tracking-tighter text-white uppercase transform scale-90 opacity-0">Autodots</h1>
+                <p id="reveal-subtext" class="text-xl tracking-wide text-zinc-400 mt-4 min-h-[30px] font-light"></p>
             </div>
 
-            <div id="scene-manual" class="absolute inset-0 flex flex-col items-center justify-center z-10">
-                <h1 id="text-manual" class="text-5xl md:text-6xl font-light tracking-tight text-neutral-100 text-center select-none max-w-2xl">
-                    Still <span class="font-bold text-white">manual</span>
-                </h1>
-                
-                <div id="ui-scatter-container" class="absolute inset-0 pointer-events-none overflow-hidden opacity-0">
-                    <div class="glass-panel absolute p-4 rounded-xl w-72 left-10 top-16" style="transform: rotate(-8deg);">
-                        <div class="h-3 w-1/2 bg-neutral-700 rounded mb-2"></div>
-                        <div class="h-2 w-3/4 bg-neutral-800 rounded mb-4"></div>
-                        <div class="flex justify-between"><div class="h-3 w-8 bg-purple-900 rounded"></div><div class="h-3 w-12 bg-neutral-700 rounded"></div></div>
-                    </div>
-                    <div class="glass-panel absolute p-4 rounded-xl w-64 right-12 top-24" style="transform: rotate(6deg);">
-                        <div class="h-3 w-1/3 bg-neutral-700 rounded mb-2"></div>
-                        <div class="h-2 w-full bg-neutral-800 rounded mb-2"></div>
-                        <div class="h-2 w-2/3 bg-neutral-800 rounded"></div>
-                    </div>
-                    <div class="glass-panel absolute p-4 rounded-xl w-80 left-20 bottom-20" style="transform: rotate(12deg);">
-                        <div class="flex items-center space-x-3 mb-2">
-                            <div class="h-4 w-4 rounded-full bg-red-500/30"></div>
-                            <div class="h-3 w-24 bg-neutral-700 rounded"></div>
-                        </div>
-                        <div class="h-5 w-full bg-neutral-950/60 rounded border border-neutral-800"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="scene-reveal" class="absolute inset-0 flex flex-col items-center justify-center z-20 opacity-0 pointer-events-none scale-50">
-                <div class="flex items-center space-x-6">
-                    <div id="logo-geometric" class="relative w-24 h-24 transform-gpu">
-                        <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_0_25px_rgba(168,85,247,0.5)]">
-                            <polygon points="50,5 95,25 95,75 50,95 5,75 5,25" fill="none" stroke="#a855f7" stroke-width="4"/>
-                            <polygon points="50,20 80,35 80,65 50,80 20,65 20,35" fill="rgba(147, 51, 234, 0.2)" stroke="#c084fc" stroke-width="2"/>
-                            <circle cx="50" cy="50" r="10" fill="#ffffff"/>
-                        </svg>
-                    </div>
-                    <div class="flex flex-col">
-                        <h2 id="text-ibanpay" class="text-7xl font-bold tracking-tighter bg-gradient-to-r from-white via-neutral-200 to-purple-400 bg-clip-text text-transparent">iBanPay</h2>
-                        <div id="ai-badge" class="mt-4 px-4 py-1.5 rounded-full bg-purple-950/40 border border-purple-500/50 flex items-center space-x-2 w-max glow-purple opacity-0 transform translate-y-4">
-                            <span class="text-purple-400 text-xs">✨</span>
-                            <span class="text-xs font-semibold tracking-wide text-purple-200 uppercase">AI-powered payment assistant</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="scene-multiple" class="absolute inset-0 flex flex-col items-center justify-center z-30 opacity-0 pointer-events-none">
-                <div id="text-flow-container" class="text-4xl md:text-5xl font-light text-neutral-300">
-                    <span id="text-flow-static">Send </span><span id="text-flow-dynamic" class="font-semibold text-white">one</span>
-                </div>
-            </div>
-
-            <div id="scene-email" class="absolute inset-0 flex items-center justify-center z-40 opacity-0 pointer-events-none">
-                <div id="email-mockup" class="w-[900px] h-[520px] glass-panel rounded-2xl overflow-hidden flex flex-col shadow-2xl scale-95 blur-md">
-                    <div class="h-12 border-b border-white/5 bg-neutral-900/60 px-5 flex items-center justify-between">
-                        <div class="flex space-x-2">
-                            <div class="w-3 h-3 rounded-full bg-red-500/40"></div>
-                            <div class="w-3 h-3 rounded-full bg-yellow-500/40"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-500/40"></div>
-                        </div>
-                        <div id="new-mail-btn" class="px-4 py-1 rounded-lg bg-purple-600/20 border border-purple-500/30 text-xs font-medium text-purple-300 shadow-inner">
-                            New mail
-                        </div>
-                        <div class="w-12"></div>
-                    </div>
-                    <div class="flex-1 flex">
-                        <div class="w-48 bg-black/20 border-r border-white/5 p-4 space-y-2 text-xs text-neutral-400">
-                            <div class="p-2 bg-white/5 rounded-md text-white font-medium">Inbox</div>
-                            <div class="p-2">Sent</div>
-                            <div class="p-2">Drafts</div>
-                        </div>
-                        <div class="flex-1 p-6 flex flex-col bg-neutral-950/40">
-                            <div class="flex items-center space-x-2 border-b border-white/5 pb-3 text-xs text-neutral-400">
-                                <span>To:</span>
-                                <div id="email-recipient" class="text-purple-300 font-mono"></div>
-                            </div>
-                            <div id="drop-zone" class="flex-1 mt-4 border border-dashed border-neutral-800 rounded-xl flex flex-col items-center justify-center relative">
-                                <div id="pdf-icon" class="w-16 h-20 bg-neutral-900 border-2 border-neutral-700 rounded-lg flex flex-col justify-between p-2 shadow-xl opacity-0 absolute">
-                                    <div class="text-[10px] font-bold text-red-400">PDF</div>
-                                    <div class="h-1 w-full bg-neutral-700 rounded"></div>
-                                    <div class="h-1 w-2/3 bg-neutral-700 rounded"></div>
-                                </div>
-                                <span id="drop-text" class="text-xs text-neutral-500">Drag and drop invoice document</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="text-email-label" class="absolute bottom-12 text-2xl font-light tracking-wide text-neutral-300 opacity-0 transform translate-y-4">
-                    to your <span class="font-semibold text-purple-400">iBanPay email</span>
-                </div>
-                <div id="virtual-cursor" class="absolute w-6 h-6 pointer-events-none z-50 opacity-0" style="top: 80%; left: 80%;">
-                    <svg viewBox="0 0 24 24" fill="none" class="w-full h-full text-white drop-shadow-md">
-                        <path d="M5.5 3V17L9.5 13.5L14 21L17.5 19L13 11.5L18.5 11.5L5.5 3Z" fill="currentColor" stroke="black" stroke-width="1.5"/>
-                    </svg>
-                </div>
-            </div>
-
-            <div id="scene-scanning" class="absolute inset-0 flex items-center justify-center z-50 opacity-0 pointer-events-none perspective-[1000px]">
-                <div class="w-full max-w-5xl flex items-center justify-between px-16">
-                    <div id="scan-text-left" class="text-3xl font-light text-neutral-400 transform -translate-x-12 opacity-0">It extracts</div>
-                    
-                    <div id="invoice-doc" class="w-[320px] h-[440px] bg-white text-black p-6 rounded-lg shadow-[0_50px_100px_rgba(0,0,0,0.8)] relative transform-gpu" style="transform: rotateX(15deg) rotateY(-20deg);">
-                        <div id="laser-bar" class="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent shadow-[0_0_15px_#a855f7] z-10 opacity-0"></div>
-                        
-                        <div class="flex justify-between items-start border-b pb-4 mb-4">
-                            <div>
-                                <div class="text-xs font-bold tracking-tight uppercase">INVOICE</div>
-                                <div class="text-[9px] text-neutral-400 mt-1">INV-2026-8921</div>
-                            </div>
-                            <div class="w-8 h-8 bg-neutral-900 rounded"></div>
-                        </div>
-                        <div class="space-y-3">
-                            <div id="field-box-1" class="p-1.5 rounded relative border border-transparent">
-                                <div class="text-[8px] text-neutral-400">Vendor</div>
-                                <div class="text-[11px] font-medium">Acme Cloud Corp</div>
-                            </div>
-                            <div id="field-box-2" class="p-1.5 rounded relative border border-transparent">
-                                <div class="text-[8px] text-neutral-400">Due Date</div>
-                                <div class="text-[11px] font-medium">July 24, 2026</div>
-                            </div>
-                            <div id="field-box-3" class="p-1.5 rounded relative border border-transparent">
-                                <div class="text-[8px] text-neutral-400">Total Amount Payable</div>
-                                <div id="glow-amount" class="text-lg font-bold tracking-tight text-neutral-900">$15,500</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="scan-text-right" class="text-3xl font-light text-neutral-400 transform translate-x-12 opacity-0"><span class="font-semibold text-white">all key details</span></div>
-                </div>
-            </div>
-
-            <div id="scene-cta" class="absolute inset-0 flex flex-col items-center justify-center z-50 opacity-0 pointer-events-none">
-                <div id="text-seconds-later" class="text-4xl font-light text-neutral-400 mb-8 opacity-0 transform translate-y-6">And seconds later...</div>
-                
-                <div id="notification-card" class="w-[420px] p-5 bg-white text-black rounded-2xl shadow-2xl flex items-start space-x-4 transform translate-y-12 opacity-0">
-                    <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 shrink-0">✨</div>
-                    <div class="flex-1">
-                        <h4 class="text-sm font-semibold text-neutral-900">Your payment draft is ready</h4>
-                        <p class="text-xs text-neutral-500 mt-0.5">Parsed via automated extraction system successfully.</p>
-                        <button id="cta-btn" class="mt-4 w-full py-2.5 rounded-xl bg-purple-700 text-white text-xs font-semibold tracking-wide transition-colors hover:bg-purple-800 flex items-center justify-center space-x-1">
-                            <span>Login to review</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div id="star-element" class="absolute w-16 h-16 opacity-0 scale-0 pointer-events-none">
-                    <svg viewBox="0 0 24 24" fill="none" class="w-full h-full text-purple-400">
-                        <path d="M12 0L14.8 9.2L24 12L14.8 14.8L12 24L9.2 14.8L0 12L9.2 9.2L12 0Z" fill="currentColor"/>
-                    </svg>
-                </div>
-            </div>
-
-            <div id="scene-dashboard" class="absolute inset-0 bg-[#f8fafc] text-slate-900 opacity-0 pointer-events-none flex flex-col">
-                <div class="h-16 border-b border-slate-200 px-8 flex items-center justify-between bg-white">
+            <div id="scene-dashboard" class="absolute inset-0 glass-ui m-6 rounded-2xl overflow-hidden opacity-0 pointer-events-none flex flex-col shadow-2xl border border-zinc-800">
+                <div class="h-16 border-b border-zinc-800 px-6 flex items-center justify-between bg-zinc-950/90">
                     <div class="flex items-center space-x-8">
-                        <span class="font-bold text-lg tracking-tight text-purple-700">iBanFirst</span>
-                        <div id="dashboard-user" class="text-sm font-medium text-slate-500 opacity-0">Welcome back, Paul</div>
+                        <span class="text-xl font-black uppercase tracking-tight text-white flex items-center space-x-2">
+                            <span class="w-3 h-3 bg-neon rounded-full inline-block glow-neon-ui"></span>
+                            <span>Autodots</span>
+                        </span>
+                        <nav class="flex space-x-6 text-sm font-medium text-zinc-400">
+                            <span id="nav-live" class="text-white">Live Workshop</span>
+                            <span id="nav-invoice">Smart Invoicing</span>
+                            <span id="nav-analytics">AI Diagnostics Analytics</span>
+                        </nav>
                     </div>
-                    <div class="h-8 w-8 rounded-full bg-slate-200"></div>
+                    <div id="user-badge" class="flex items-center space-x-3 bg-zinc-900 px-3 py-1.5 rounded-full border border-zinc-800 opacity-0">
+                        <div class="w-6 h-6 rounded-full bg-neon/20 flex items-center justify-center text-xs text-neon font-bold">P</div>
+                        <span class="text-xs font-semibold text-zinc-300">Welcome back, Paul</span>
+                    </div>
                 </div>
-                <div class="flex-1 flex overflow-hidden">
-                    <div class="w-1/2 p-8 border-r border-slate-200 flex flex-col justify-between">
-                        <div class="space-y-4">
-                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Transaction Ledger</h3>
-                            <div id="ledger-row" class="p-4 bg-white rounded-xl border border-slate-200 flex items-center justify-between shadow-sm cursor-pointer transition-all">
+
+                <div class="flex-1 flex overflow-hidden relative">
+                    
+                    <div class="w-1/2 p-6 border-r border-zinc-800 space-y-6 flex flex-col justify-between overflow-y-auto">
+                        <div class="grid grid-cols-2 gap-4" id="dashboard-metric-cards">
+                            <div class="bg-zinc-900/60 p-4 rounded-xl border border-zinc-800 transform translate-y-8 opacity-0 dashboard-card">
+                                <div class="text-xs font-bold uppercase tracking-wider text-zinc-500">Active Jobs Completed</div>
+                                <div class="text-3xl font-extrabold text-white mt-1">42</div>
+                            </div>
+                            <div class="bg-zinc-900/60 p-4 rounded-xl border border-zinc-800 transform translate-y-8 opacity-0 dashboard-card">
+                                <div class="text-xs font-bold uppercase tracking-wider text-zinc-500">Efficiency Rate</div>
+                                <div class="text-3xl font-extrabold text-neon mt-1 glow-neon-text">98%</div>
+                            </div>
+                        </div>
+
+                        <div id="integration-panel" class="bg-zinc-900/80 p-5 rounded-xl border border-zinc-800 space-y-4 opacity-0 absolute inset-x-6 top-32 bottom-24 hidden flex-col justify-center">
+                            <h3 class="text-sm font-bold uppercase tracking-wider text-zinc-400">Parts Ordering Network</h3>
+                            <div class="flex items-center justify-between bg-zinc-950 p-4 rounded-lg border border-zinc-800">
                                 <div class="flex items-center space-x-3">
-                                    <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+                                    <span class="text-2xl">⚙️</span>
                                     <div>
-                                        <div class="text-sm font-semibold">Acme Cloud Corp</div>
-                                        <div class="text-xs text-slate-400">INV-2026-8921</div>
+                                        <div class="text-sm font-bold">Global Parts Distributor</div>
+                                        <div class="text-xs text-zinc-500">API Connected</div>
                                     </div>
                                 </div>
-                                <div class="flex items-center space-x-4">
-                                    <span class="text-sm font-bold">$15,500.00</span>
-                                    <span id="badge-draft" class="px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase rounded-full bg-slate-100 text-slate-600 border border-slate-200">DRAFT</span>
+                                <button id="connect-btn" class="px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider bg-zinc-800 text-zinc-300 border border-zinc-700">Connect Distributor</button>
+                            </div>
+                        </div>
+
+                        <div id="calendar-panel" class="bg-zinc-900/40 p-4 rounded-xl border border-zinc-800 space-y-3 opacity-0 absolute inset-x-6 top-32 bottom-24 hidden flex-col justify-center">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">Bay Allocation Schedule</h3>
+                            <div class="space-y-2 relative" id="calendar-card-stack">
+                                <div class="p-3 bg-zinc-900 border border-zinc-800 rounded-lg text-xs flex justify-between items-center text-zinc-400"><span>Bay 2 — Audi A4</span><span class="font-mono">In Progress</span></div>
+                                <div id="moving-bay-card" class="p-3 bg-zinc-900/90 border border-zinc-700 rounded-lg text-xs flex justify-between items-center text-white glow-neon-ui transform translate-y-12 opacity-0">
+                                    <span class="font-bold">Bay 1 — Tesla Model 3</span>
+                                    <span class="px-2 py-0.5 bg-neon/20 text-neon font-mono rounded">Assigned</span>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div id="approval-box-cta" class="p-6 bg-purple-900 rounded-2xl text-white flex items-center justify-between opacity-0 transform translate-y-8">
-                            <div>
-                                <h4 class="text-sm font-semibold">Ready for network release</h4>
-                                <p class="text-xs text-purple-300 mt-0.5">Requires instant cryptographic trigger signature.</p>
+
+                        <div id="mechanic-panel" class="bg-zinc-900/40 p-4 rounded-xl border border-zinc-800 space-y-3 opacity-0 absolute inset-x-6 top-32 bottom-24 hidden flex-col justify-center">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">Live Mechanic Assignment</h3>
+                            <div class="space-y-2" id="mechanic-list-nodes">
+                                <div class="p-3 bg-zinc-950 border border-zinc-800 rounded-lg flex justify-between items-center text-sm"><span class="text-zinc-300">Dave (Bay 1)</span> <span class="checkbox-node w-5 h-5 rounded border border-zinc-700 flex items-center justify-center text-xs"></span></div>
+                                <div class="p-3 bg-zinc-950 border border-zinc-800 rounded-lg flex justify-between items-center text-sm"><span class="text-zinc-300">Alex (Bay 2)</span> <span class="checkbox-node w-5 h-5 rounded border border-zinc-700 flex items-center justify-center text-xs"></span></div>
+                                <div class="p-3 bg-zinc-950 border border-zinc-800 rounded-lg flex justify-between items-center text-sm"><span class="text-zinc-300">Sam (Bay 3)</span> <span class="checkbox-node w-5 h-5 rounded border border-zinc-700 flex items-center justify-center text-xs"></span></div>
                             </div>
-                            <div class="px-4 py-2.5 rounded-xl bg-purple-600 text-xs font-bold uppercase tracking-wider shadow-md whitespace-nowrap">
-                                Send for approval
+                        </div>
+
+                        <div id="throughput-panel" class="bg-zinc-900/40 p-4 rounded-xl border border-zinc-800 space-y-4 opacity-0 absolute inset-x-6 top-32 bottom-24 hidden flex-col justify-center">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">Workshop Throughput Expansion</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <div class="flex justify-between text-xs mb-1 text-zinc-400"><span>Utilization Capacity</span><span class="mono-font font-bold">85%</span></div>
+                                    <div class="h-2 w-full bg-zinc-950 rounded-full overflow-hidden"><div id="bar-chart-1" class="h-full bg-zinc-700 w-0"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs mb-1 text-zinc-400"><span>Revenue Capture</span><span class="mono-font font-bold">94%</span></div>
+                                    <div class="h-2 w-full bg-zinc-950 rounded-full overflow-hidden"><div id="bar-chart-2" class="h-full bg-zinc-700 w-0"></div></div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="w-1/2 p-6 bg-zinc-950/40 relative flex items-center justify-center">
+                        <div id="invoice-modal-card" class="w-full max-w-sm bg-zinc-900 border border-zinc-800 rounded-xl p-5 shadow-2xl space-y-4 transform scale-90 opacity-0">
+                            <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
+                                <span class="text-xs font-bold tracking-widest text-zinc-500 uppercase">Smart Invoice View</span>
+                                <span class="text-xs font-mono px-2 py-0.5 bg-zinc-800 rounded text-zinc-300">Client: John Doe</span>
+                            </div>
+                            <div class="bg-zinc-950 p-3 rounded-lg border border-zinc-800 min-h-[60px]">
+                                <p id="invoice-writing-text" class="text-xs font-mono text-zinc-400 leading-relaxed"></p>
+                            </div>
+                            <button id="invoice-action-btn" class="w-full py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-purple-900 text-white shadow-lg">Generate AI Quote</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="dashboard-cursor" class="absolute w-5 h-5 pointer-events-none z-50 opacity-0" style="top:70%; left:80%;">
+                    <svg viewBox="0 0 24 24" fill="none" class="w-full h-full text-white drop-shadow-lg"><path d="M5.5 3V17L9.5 13.5L14 21L17.5 19L13 11.5L18.5 11.5L5.5 3Z" fill="currentColor" stroke="black" stroke-width="1.5"/></svg>
+                </div>
+            </div>
+
+            <div id="scene-mobile" class="absolute inset-0 flex items-center justify-center z-50 opacity-0 pointer-events-none">
+                <div id="phone-mockup" class="w-[310px] h-[610px] bg-black rounded-[40px] border-4 border-zinc-800 relative shadow-2xl overflow-hidden flex flex-col p-3 transform scale-75 translate-y-12">
+                    <div class="w-32 h-4 bg-black rounded-full absolute top-4 left-1/2 transform -translate-x-1/2 z-50"></div>
                     
-                    <div id="review-panel-form" class="w-1/2 bg-slate-50 p-8 overflow-y-auto space-y-6 transform translate-x-12 opacity-0">
-                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Approval Verification Parameters</h3>
-                        <div class="space-y-3" id="form-scroll-nodes">
-                            <div class="p-3 bg-white rounded-lg border border-slate-200 flex justify-between text-xs" id="node-1"><span class="text-slate-500">Beneficiary IBAN</span><span class="font-mono font-medium">BE62 5334 8921 0092</span></div>
-                            <div class="p-3 bg-white rounded-lg border border-slate-200 flex justify-between text-xs" id="node-2"><span class="text-slate-500">Clearing Network</span><span class="font-medium">SEPA Instant</span></div>
-                            <div class="p-3 bg-white rounded-lg border border-slate-200 flex justify-between text-xs" id="node-3"><span class="text-slate-500">Source Wallet</span><span class="font-medium">EUR Operations Main</span></div>
-                            <div class="p-3 bg-white rounded-lg border border-slate-200 flex justify-between text-xs" id="node-4"><span class="text-slate-500">FX Conversion Rate</span><span class="font-medium">1.0000 EUR/EUR</span></div>
+                    <div class="flex-1 rounded-[32px] bg-zinc-950 p-4 flex flex-col justify-between relative overflow-hidden pt-8">
+                        <div id="phone-screen-odometer" class="flex-1 flex flex-col justify-center space-y-6">
+                            <h4 class="text-xs font-bold uppercase text-zinc-500 tracking-widest text-center">Autodots Customer Portal</h4>
+                            <div class="bg-zinc-900 p-6 rounded-2xl border border-zinc-800 text-center space-y-1">
+                                <div class="text-xs font-medium text-zinc-400">Authorized Repair Investment</div>
+                                <div id="phone-odometer-text" class="text-3xl font-black tracking-tight text-white mono-font">$1,200</div>
+                            </div>
+                        </div>
+
+                        <div id="phone-screen-lock" class="absolute inset-0 bg-gradient-to-b from-zinc-900 to-black p-4 pt-16 flex flex-col items-center space-y-4 opacity-0 hidden">
+                            <div class="text-5xl font-light text-white tracking-tight select-none">08:42</div>
+                            <div id="push-notification-row" class="w-full bg-white/10 backdrop-blur-md border border-white/10 p-3.5 rounded-2xl flex space-x-3 items-start transform translate-y-4 opacity-0 shadow-lg">
+                                <span class="text-xl">✨</span>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-baseline"><span class="text-xs font-bold text-white">Autodots OS</span><span class="text-[9px] text-zinc-400">now</span></div>
+                                    <p class="text-xs text-zinc-200 mt-0.5">Job #1024 Approved by Customer.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="phone-screen-delivery" class="absolute inset-0 bg-zinc-950 p-4 pt-12 flex flex-col justify-between opacity-0 hidden">
+                            <div class="space-y-4">
+                                <h3 class="text-sm font-bold text-zinc-300 border-b border-zinc-900 pb-2">Parts Delivery Track</h3>
+                                <div class="p-3 bg-zinc-900 border border-zinc-800 rounded-xl space-y-1.5">
+                                    <div class="flex justify-between text-xs"><span class="text-zinc-400">Item Name</span><span class="text-white font-medium">Alternator Core</span></div>
+                                    <div class="flex justify-between text-xs"><span class="text-zinc-400">ETA Arrival</span><span class="text-neon font-mono">14 Mins</span></div>
+                                </div>
+                            </div>
+                            <button id="track-delivery-btn" class="w-full py-3 rounded-xl bg-neon text-black text-xs font-black uppercase tracking-wider glow-neon-ui mb-2">Track Delivery</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="scene-success" class="absolute inset-0 flex flex-col items-center justify-center z-50 opacity-0 pointer-events-none">
-                <div id="success-nodes" class="flex space-x-16 mb-12">
-                    <div class="flex flex-col items-center space-y-2 transform translate-y-6 opacity-0 success-profile">
-                        <div class="w-12 h-12 rounded-full bg-neutral-800 border-2 border-neutral-700 flex items-center justify-center text-sm font-bold">P</div>
-                        <span class="text-xs text-neutral-400">Approver 1</span>
+            <div id="scene-planner" class="absolute inset-0 glass-ui m-6 rounded-2xl overflow-hidden opacity-0 pointer-events-none flex flex-col border border-zinc-800">
+                <div class="h-14 bg-zinc-950/80 border-b border-zinc-800 px-6 flex items-center justify-between">
+                    <span class="text-xs font-bold text-zinc-400 uppercase tracking-widest">Live Workshop Planner module</span>
+                    <div class="h-2 w-32 bg-zinc-900 rounded-full"></div>
+                </div>
+                <div class="flex-1 p-6 grid grid-cols-4 gap-4 items-center">
+                    <div class="planner-grid-cell bg-zinc-900/60 border border-zinc-800 p-4 rounded-xl h-36 flex flex-col justify-between">
+                        <div class="text-xs font-mono text-zinc-500">08:00 AM</div>
+                        <div class="text-xs font-bold text-white">Audi A4 Brake Service</div>
+                        <div class="h-1.5 w-full bg-zinc-950 rounded-full overflow-hidden"><div class="h-full bg-neon w-full"></div></div>
                     </div>
-                    <div class="flex flex-col items-center space-y-2 transform translate-y-6 opacity-0 success-profile">
-                        <div class="w-12 h-12 rounded-full bg-neutral-800 border-2 border-neutral-700 flex items-center justify-center text-sm font-bold">M</div>
-                        <span class="text-xs text-neutral-400">Approver 2</span>
+                    <div class="planner-grid-cell bg-zinc-900/60 border border-zinc-800 p-4 rounded-xl h-36 flex flex-col justify-between">
+                        <div class="text-xs font-mono text-zinc-500">09:30 AM</div>
+                        <div class="text-xs font-bold text-white">Tesla Model 3 Alignment</div>
+                        <div class="h-1.5 w-full bg-zinc-950 rounded-full overflow-hidden"><div class="h-full bg-neon w-1/3"></div></div>
+                    </div>
+                    <div class="planner-grid-cell bg-zinc-900/60 border border-zinc-800 p-4 rounded-xl h-36 flex flex-col justify-between">
+                        <div class="text-xs font-mono text-zinc-500">11:00 AM</div>
+                        <div class="text-xs font-bold text-white">Ford F-150 Oil Flush</div>
+                        <div class="h-1.5 w-full bg-zinc-950 rounded-full overflow-hidden"><div class="h-full bg-zinc-800 w-0"></div></div>
+                    </div>
+                    <div id="planner-bay-cell-4" class="bg-zinc-900 border border-zinc-700 p-4 rounded-xl h-36 flex flex-col justify-between relative relative glow-neon-ui">
+                        <div class="text-xs font-mono text-neon font-bold">Bay 4 — Active Node</div>
+                        <div class="text-sm font-extrabold text-white">Diagnostics Stack</div>
+                        
+                        <div id="brand-logos-pop-wrapper" class="absolute inset-0 pointer-events-none flex items-center justify-center space-x-2 opacity-0 transform scale-75">
+                            <span class="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-600 flex items-center justify-center text-[10px] font-bold text-white">BMW</span>
+                            <span class="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-600 flex items-center justify-center text-[10px] font-bold text-white">TSLA</span>
+                            <span class="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-600 flex items-center justify-center text-[10px] font-bold text-white">FORD</span>
+                        </div>
                     </div>
                 </div>
-                <div id="message-capsule" class="px-8 py-3.5 rounded-full bg-gradient-to-r from-purple-900/60 to-indigo-900/60 border border-purple-500/40 glow-purple flex items-center space-x-3 transform scale-75 opacity-0">
-                    <div class="relative w-6 h-6">
-                        <svg viewBox="0 0 24 24" class="w-full h-full">
-                            <circle id="loading-ring" cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.2)" stroke-width="2" fill="none"/>
-                            <circle id="success-ring" cx="12" cy="12" r="10" stroke="#22c55e" stroke-width="2" fill="none" stroke-linecap="round" style="stroke-dasharray: 63; stroke-dashoffset: 63;"/>
-                        </svg>
-                        <span id="capsule-check" class="absolute inset-0 flex items-center justify-center text-[10px] text-green-400 opacity-0">✓</span>
+            </div>
+
+            <div id="scene-retention" class="absolute inset-0 flex items-center justify-between px-20 z-50 opacity-0 pointer-events-none">
+                <div class="w-2/5 space-y-4">
+                    <span class="text-xs font-bold uppercase tracking-widest text-neon">Automated Customer Retention</span>
+                    <h2 class="text-4xl font-extrabold tracking-tight text-white">Smart Lifecycle Marketing</h2>
+                    <p class="text-xs text-zinc-400">Target segments seamlessly matching real-time mechanical parameters diagnostic milestones.</p>
+                </div>
+                
+                <div class="w-1/2 bg-zinc-900 border border-zinc-800 p-6 rounded-2xl shadow-2xl space-y-4 relative">
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold uppercase text-zinc-500 tracking-wider">New Campaign Trigger</label>
+                        <div id="retention-dropdown" class="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 rounded-xl text-xs font-medium text-zinc-300 relative flex justify-between items-center cursor-pointer">
+                            <span id="dropdown-selected-val">Select Service Follow-up Interval</span>
+                            <span class="text-[10px] text-zinc-500">▼</span>
+                            <div id="retention-dropdown-drawer" class="absolute left-0 right-0 top-full mt-2 bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden shadow-2xl h-0 opacity-0 z-50">
+                                <div class="p-3 hover:bg-zinc-900 text-xs text-white border-b border-zinc-900">Immediate Diagnostics Check</div>
+                                <div id="target-dropdown-item" class="p-3 hover:bg-zinc-900 text-xs text-neon font-bold">6-Month Reminder</div>
+                            </div>
+                        </div>
                     </div>
-                    <span id="capsule-text" class="text-sm font-semibold tracking-wide uppercase text-purple-100">Verifying execution</span>
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold uppercase text-zinc-500 tracking-wider">Automated Notification Payload</label>
+                        <div class="w-full bg-zinc-950 border border-zinc-800 p-4 rounded-xl min-h-[70px]">
+                            <p id="retention-typing-payload" class="text-xs font-mono text-zinc-400 leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="scene-analytics" class="absolute inset-0 flex flex-col justify-between p-12 z-50 opacity-0 pointer-events-none">
+                <div class="flex justify-between items-start">
+                    <div class="space-y-1">
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-neon">Gross Profit & Analytics</h2>
+                        <h1 class="text-3xl font-extrabold text-white">Financial Matrix Telemetry</h1>
+                    </div>
+                    <div class="flex space-x-4">
+                        <div class="bg-zinc-900/80 px-4 py-2 rounded-xl border border-zinc-800 text-right"><div class="text-[9px] font-bold uppercase text-zinc-500">Labor Efficiency</div><div class="text-lg font-extrabold text-white">88% Utilization</div></div>
+                        <div class="bg-zinc-900/80 px-4 py-2 rounded-xl border border-zinc-800 text-right"><div class="text-[9px] font-bold uppercase text-zinc-500">Parts Margin Growth</div><div class="text-lg font-extrabold text-neon glow-neon-text">+32% Margin</div></div>
+                    </div>
                 </div>
 
-                <button id="download-btn" class="mt-8 px-5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-medium tracking-wide text-neutral-300 transform translate-y-4 opacity-0 hover:bg-white/10 transition-colors">
-                    Download PDF confirmation
-                </button>
+                <div class="flex-1 bg-zinc-950/40 border border-zinc-900 rounded-2xl mt-6 relative p-6 flex items-end">
+                    <svg class="w-full h-48 overflow-visible" viewBox="0 0 1000 200" preserveAspectRatio="none">
+                        <path id="analytics-vector-stroke" d="M 0 180 Q 200 130 400 140 T 800 40 T 1000 10" fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round" style="stroke-dasharray: 1200; stroke-dashoffset: 1200;"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div id="scene-matrix-grid" class="absolute inset-0 p-10 z-50 opacity-0 pointer-events-none grid grid-cols-2 gap-6">
+                <div class="matrix-grid-viewport bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col justify-between transform scale-90">
+                    <span class="text-[10px] font-bold font-mono tracking-wider text-zinc-500 uppercase">STREAM #01 // BAY STATUS</span>
+                    <div class="h-2 w-1/3 bg-zinc-800 rounded"></div>
+                </div>
+                <div class="matrix-grid-viewport bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col justify-between transform scale-90">
+                    <span class="text-[10px] font-bold font-mono tracking-wider text-zinc-500 uppercase">STREAM #02 // INVOICE QUEUE</span>
+                    <div class="h-2 w-1/2 bg-zinc-800 rounded"></div>
+                </div>
+                <div class="matrix-grid-viewport bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col justify-between transform scale-90">
+                    <span class="text-[10px] font-bold font-mono tracking-wider text-zinc-500 uppercase">STREAM #03 // PARTS ETA MATRIX</span>
+                    <div class="h-2 w-1/4 bg-zinc-800 rounded"></div>
+                </div>
+                <div class="matrix-grid-viewport bg-zinc-900 border border-zinc-700 rounded-xl p-4 flex flex-col justify-between transform scale-90 glow-neon-ui">
+                    <span class="text-[10px] font-bold font-mono tracking-wider text-neon uppercase">STREAM #04 // LIVE WORKSHOP MONITOR</span>
+                    <div class="h-2 w-2/3 bg-neon/20 rounded"></div>
+                </div>
+            </div>
+
+            <div id="scene-ai-chat" class="absolute inset-0 flex flex-col items-center justify-center p-12 z-50 opacity-0 pointer-events-none">
+                <div id="ai-search-field-box" class="w-[600px] bg-zinc-900 border border-zinc-800 px-5 py-3.5 rounded-full text-sm font-light tracking-wide text-zinc-200 typing-cursor shadow-2xl"></div>
+                
+                <div id="ai-chat-bubbles-framework" class="w-[600px] mt-6 flex flex-col space-y-3 opacity-0 transform translate-y-6">
+                    <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl rounded-tl-none max-w-[85%] self-start">
+                        <p id="ai-response-text-stream" class="text-xs text-zinc-300 leading-relaxed font-medium"></p>
+                    </div>
+                </div>
             </div>
 
             <div id="scene-outro" class="absolute inset-0 flex flex-col items-center justify-center z-50 opacity-0 pointer-events-none">
-                <div id="manifesto-text" class="text-3xl md:text-4xl font-light text-center tracking-tight text-neutral-400 h-16"></div>
-                
-                <div id="final-brand-block" class="absolute inset-0 flex flex-col items-center justify-center opacity-0 scale-90">
-                    <div class="w-32 h-32 mb-6 relative">
-                        <svg viewBox="0 0 100 100" class="w-full h-full filter drop-shadow-[0_0_35px_rgba(147,51,234,0.6)]">
-                            <defs>
-                                <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#c084fc"/>
-                                    <stop offset="100%" stop-color="#4f46e5"/>
-                                </linearGradient>
-                            </defs>
-                            <path id="ribbon-path" d="M50 15 L85 75 L15 75 Z" fill="none" stroke="url(#glowGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                    <h1 class="text-6xl font-bold tracking-tighter text-white mb-2">iBanFirst</h1>
-                    <p class="text-sm font-mono tracking-widest text-purple-400">ibanfirst.com</p>
+                <div id="outro-floating-avatars-pool" class="absolute inset-0 pointer-events-none overflow-hidden">
+                    <div class="outro-node absolute w-12 h-12 bg-neon/10 rounded-full border border-neon/40 flex items-center justify-center text-sm" style="top:70%; left:15%;">📈</div>
+                    <div class="outro-node absolute w-10 h-10 bg-zinc-900 rounded-full border border-zinc-700 flex items-center justify-center text-sm" style="top:80%; right:25%;">✓</div>
+                    <div class="outro-node absolute w-14 h-14 bg-neon/10 rounded-full border border-neon/40 flex items-center justify-center text-lg" style="top:65%; right:15%;">✨</div>
                 </div>
+
+                <div id="outro-brand-lockup-wrapper" class="text-center space-y-2 transform scale-95 opacity-0">
+                    <h1 class="text-8xl font-black tracking-tighter text-white uppercase bg-gradient-to-r from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent">Autodots</h1>
+                    <p class="text-base text-zinc-400 tracking-widest uppercase font-light">The Operating System for Modern Auto Repair.</p>
+                </div>
+
+                <button id="outro-final-cta-btn" class="mt-8 px-8 py-3.5 bg-neon text-black text-xs font-black uppercase tracking-widest rounded-full shadow-2xl opacity-0 transform translate-y-4 glow-neon-ui">
+                    autodots.io
+                </button>
             </div>
 
         </div>
     </div>
 
     <script>
-        // Ensure TextPlugin is globally recognized by GSAP engine core execution layer
+        // Inject Core Plugins dependencies globally inside the functional render scope
         gsap.registerPlugin(TextPlugin);
 
-        // Global master timeline setup matching standard 1s = 1 timeline duration metric 
-        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-        // Initialize elements configuration settings before sequence loop playback fires
-        gsap.set(["#brand-logo", "#text-manual"], { opacity: 1 });
+        // Global master timeline synchronization matrix hook
+        const mainTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
 
         /* ==========================================================================
-           0:00 - 0:01 | INTRO SUBTLE SCALE ZOOM & TEXT ENTRY FADE
+           0:00 - 0:01 | GOOGLE SEARCH KEYBOARD INPUT RECORDINGS
            ========================================================================== */
-        tl.to("#camera-rig", { scale: 1.05, duration: 1, ease: "power1.out" }, 0);
-        tl.from("#text-manual", { y: 15, opacity: 0, duration: 0.8 }, 0.1);
-
-        /* ==========================================================================
-           0:01 - 0:02 | UI MANUAL CHAOS ELEMENTS SCATTER GLIDE IN
-           ========================================================================== */
-        tl.to("#ui-scatter-container", { opacity: 1, duration: 0.2 }, 1);
-        tl.from("#ui-scatter-container > div", {
-            y: (i) => [120, -120, 200][i],
-            x: (i) => [-150, 150, -80][i],
-            rotation: (i) => [-45, 45, -30][i],
-            z: -200,
-            stagger: 0.05,
-            duration: 0.9,
-            ease: "power4.out"
-        }, 1);
-        tl.to("#text-manual", { y: 30, scale: 0.9, duration: 0.8 }, 1);
-
-        /* ==========================================================================
-           0:02 - 0:04 | PAYMENT DETAILS TYPEWRITER TRANSITION
-           ========================================================================== */
-        tl.to("#text-manual", {
-            text: 'Still manually entering <span class="font-bold text-purple-400 custom-cursor">payment details?</span>',
-            duration: 1.2,
-            ease: "none"
-        }, 2);
-        // Macro continuous background pan tracking simulation layer
-        tl.to("#ui-scatter-container > div", { x: "+=40", y: "-=20", duration: 2, ease: "linear" }, 2);
-
-        /* ==========================================================================
-           0:04 - 0:05 | WHIP ZOOM & WHIRL 3D TWIST TRANSITION TO IBANPAY
-           ========================================================================== */
-        tl.to("#camera-rig", { 
-            rotationZ: 15, 
-            scale: 2.2, 
-            filter: "blur(20px)", 
-            opacity: 0, 
-            duration: 0.6, 
-            ease: "power4.inOut" 
-        }, 4);
+        mainTimeline.to("#search-text", { text: "Auto repair near me", duration: 0.9, ease: "none" }, 0);
         
-        // Reset camera positions properties safely right after the fast transition pass
-        tl.set("#scene-manual", { opacity: 0 }, 4.5);
-        tl.set("#scene-reveal", { opacity: 1, scale: 1, pointerEvents: "auto" }, 4.5);
-        
-        tl.to("#camera-rig", { 
-            rotationZ: 0, 
-            scale: 1, 
-            filter: "blur(0px)", 
-            opacity: 1, 
-            duration: 0.5, 
-            ease: "power3.out" 
-        }, 4.6);
+        /* ==========================================================================
+           0:01 - 0:02 | SEARCH EXPANSION & SUB-LISTINGS DROPDOWN DISPLAY
+           ========================================================================== */
+        mainTimeline.to("#search-dropdown", { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }, 1);
 
         /* ==========================================================================
-           0:05 - 0:07 | BRAND ASSISTANT PILL POP-UP GLOW REVEAL
+           0:02 - 0:04 | LEGACY SOFTWARE PANELS DROPPING ENTRY STAGGERED PARALLAX
            ========================================================================== */
-        tl.to("#ai-badge", { opacity: 1, y: 0, duration: 0.6, ease: "back.out(1.7)" }, 5.2);
-        // Ambient breathing pulse glow scaling configuration logic tracking loop
-        tl.to("#logo-geometric", { scale: 1.06, repeat: 1, yoyo: true, duration: 0.9, ease: "power1.inOut" }, 5.2);
+        mainTimeline.to("#legacy-stack", { opacity: 1, x: 0, duration: 0.6 }, 2);
+        mainTimeline.from("#legacy-stack > div", { y: -30, opacity: 0, stagger: 0.15, duration: 0.5 }, 2.1);
 
         /* ==========================================================================
-           0:07 - 0:09 | GRADIENT SCREEN TRANSITION & TYPING SEQUENCER REVEAL
+           0:04 - 0:06 | CAMERA HORIZONTAL SWIPE PAN FOCUS SHIFT TARGETING
            ========================================================================== */
-        tl.to("#scene-reveal", { opacity: 0, y: -30, duration: 0.5 }, 7);
-        tl.set("#scene-multiple", { opacity: 1, pointerEvents: "auto" }, 7.2);
-        tl.fromTo("#text-flow-container", { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5 }, 7.3);
-        // Seamless text shift transform linear update block
-        tl.to("#text-flow-dynamic", { text: "or multiple invoices", duration: 1, ease: "power1.out" }, 8);
+        mainTimeline.to("#camera-rig", { xPercent: -35, scale: 1.05, duration: 0.8, ease: "power3.inOut" }, 4);
+        mainTimeline.to("#scene-search", { opacity: 0, duration: 0.4 }, 4);
+        mainTimeline.set("#scene-loss", { opacity: 1, pointerEvents: "auto" }, 4.3);
+        mainTimeline.from("#loss-indicators > div", { x: 40, opacity: 0, stagger: 0.2, duration: 0.5 }, 4.5);
 
         /* ==========================================================================
-           0:09 - 0:11 | EMAIL CLIENT ENTRY MACRO MOCKUP NAVIGATION
+           0:06 - 0:09 | CHAOTIC MANAGEMENT ORBITING ICONS ENTRANCE STAGGERED SCALE
            ========================================================================== */
-        tl.to("#scene-multiple", { opacity: 0, scale: 0.9, duration: 0.4 }, 9);
-        tl.set("#scene-email", { opacity: 1, pointerEvents: "auto" }, 9.2);
-        tl.to("#email-mockup", { scale: 1, filter: "blur(0px)", duration: 0.8, ease: "power4.out" }, 9.3);
-        // Auto populate fields layout parameters block
-        tl.to("#email-recipient", { text: "inbound@ibanpay.com", duration: 0.8, ease: "none" }, 10.2);
+        mainTimeline.from(".chaos-node", { scale: 0, opacity: 0, stagger: 0.1, duration: 0.6, ease: "back.out(1.7)" }, 6);
+        mainTimeline.to("#camera-rig", { scale: 0.95, duration: 1.2 }, 6.5);
 
         /* ==========================================================================
-           0:11 - 0:13 | VIRTUAL HAND CURSOR DRAG & DROP ACTION SEQUENCE
+           0:09 - 0:13 | ZOOMS INTO PROFILE THOUGHT BUBBLES EMBEDDED LOOP PIPELINE
            ========================================================================== */
-        tl.to("#virtual-cursor", { opacity: 1, top: "20%", left: "85%", duration: 0.6 }, 11);
-        // Generate PDF element block vector and anchor tracking paths instantly
-        tl.set("#pdf-icon", { opacity: 1, top: "15%", left: "82%" }, 11.6);
-        // Drag operational loop vector parameters targeting towards destination grid coordinates
-        tl.to(["#virtual-cursor", "#pdf-icon"], { top: "55%", left: "50%", duration: 0.9, ease: "power2.inOut" }, 11.8);
-        // Release drop tracking simulation configurations visually structural assets
-        tl.to("#pdf-icon", { scale: 0, opacity: 0, duration: 0.3 }, 12.7);
-        tl.to("#drop-zone", { backgroundColor: "rgba(147, 51, 234, 0.08)", borderColor: "#a855f7", duration: 0.2 }, 12.7);
-        tl.to("#drop-text", { text: "✨ invoice_payment_details.pdf attached", class: "text-purple-300 text-xs font-medium" }, 12.8);
+        mainTimeline.to("#camera-rig", { xPercent: 0, scale: 1.4, duration: 0.7, ease: "power4.inOut" }, 9);
+        mainTimeline.to("#scene-loss", { opacity: 0, duration: 0.4 }, 9);
+        mainTimeline.set("#scene-thoughts", { opacity: 1, pointerEvents: "auto" }, 9.3);
+        mainTimeline.from("#owner-avatar", { scale: 0.5, opacity: 0, duration: 0.6, ease: "back.out(1.2)" }, 9.3);
+        mainTimeline.from(".thought-bubble", { scale: 0, opacity: 0, stagger: 0.2, duration: 0.5, ease: "back.out(1.5)" }, 9.8);
 
         /* ==========================================================================
-           0:13 - 0:14 | RADIAL ZOOM TRANSITION FADE CAPSULE
+           0:13 - 0:17 | CROPS THOUGHT WINDOW MATRIX INTO REVENUE ROLLING TALLY INVOICE
            ========================================================================== */
-        tl.to("#text-email-label", { opacity: 1, y: 0, duration: 0.5 }, 13.1);
-        tl.to("#scene-email", { opacity: 0, scale: 0.8, duration: 0.5 }, 13.5);
+        mainTimeline.to("#thought-bubbles-container", { opacity: 0, scale: 0.8, duration: 0.4 }, 13);
+        mainTimeline.to("#owner-avatar", { opacity: 0, y: -20, duration: 0.4 }, 13.2);
+        mainTimeline.to("#invoice-crop-box", { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 13.4);
+        // Odometer running numeric updates sequence mapping rules loop configuration parameters
+        mainTimeline.to("#tally-number", { text: "$4,500", duration: 2.2, ease: "power1.inOut" }, 14.3);
 
         /* ==========================================================================
-           0:14 - 0:16 | 3D CARD INVOICE DOCUMENT ROTATION AND LAYER DISPLAY
+           0:17 - 0:20 | WIPE NEON LINES TRANSITION ENTRANCE TO DESCRIPTION DESCRIPTION
            ========================================================================== */
-        tl.set("#scene-scanning", { opacity: 1, pointerEvents: "auto" }, 14);
-        tl.to("#scan-text-left", { opacity: 1, x: 0, duration: 0.6 }, 14.2);
-        tl.fromTo("#invoice-doc", { opacity: 0, z: -400, rotationY: -60 }, { opacity: 1, z: 0, rotationY: -20, duration: 1.2, ease: "power3.out" }, 14);
-        tl.to("#scan-text-right", { opacity: 1, x: 0, duration: 0.6 }, 14.8);
+        mainTimeline.to("#scene-thoughts", { opacity: 0, scale: 0.7, duration: 0.5 }, 17);
+        mainTimeline.set("#scene-reveal", { opacity: 1, pointerEvents: "auto" }, 17.3);
+        mainTimeline.to("#reveal-title", { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.1)" }, 17.5);
+        mainTimeline.to("#reveal-subtext", { text: "Your New AI-Powered Workshop Operating System.", duration: 1.5, ease: "none" }, 18.2);
 
         /* ==========================================================================
-           0:16 - 0:19 | NEON INVOICE DIGITAL LASER SWEEP SCANNING MATRIX
+           0:20 - 0:23 | SYSTEM DASHBOARD MOCKUP DATA LOADS HORIZONTAL REVEALS
            ========================================================================== */
-        tl.to("#laser-bar", { opacity: 1, top: "100%", duration: 1.5, ease: "power1.inOut" }, 16);
-        // Highlights processing targeting structural bounding boxes sequential tracking items
-        tl.to("#field-box-1", { borderColor: "rgba(168,85,247,0.4)", backgroundColor: "rgba(168,85,247,0.05)", duration: 0.3 }, 16.2);
-        tl.to("#field-box-2", { borderColor: "rgba(168,85,247,0.4)", backgroundColor: "rgba(168,85,247,0.05)", duration: 0.3 }, 16.7);
-        tl.to("#field-box-3", { borderColor: "#a855f7", backgroundColor: "rgba(168,85,247,0.1)", duration: 0.4 }, 17.2);
-        tl.to("#glow-amount", { color: "#7e22ce", scale: 1.05, duration: 0.3, yoyo: true, repeat: 1 }, 17.4);
-        tl.to("#laser-bar", { opacity: 0, duration: 0.2 }, 17.5);
+        mainTimeline.to("#scene-reveal", { opacity: 0, duration: 0.4 }, 20);
+        mainTimeline.set("#scene-dashboard", { opacity: 1, pointerEvents: "auto" }, 20.3);
+        mainTimeline.to(".dashboard-card", { opacity: 1, y: 0, stagger: 0.15, duration: 0.6 }, 20.5);
+        mainTimeline.to("#user-badge", { opacity: 1, duration: 0.4 }, 21.2);
 
         /* ==========================================================================
-           0:19 - 0:21 | WHIP PAGE SCROLL DOWNWARDS TO SECONDS LATER CAPTURE
+           0:23 - 0:26 | PROFILE BADGE SCALE IN AND DATA PANEL LAYOUT SCROLL
            ========================================================================== */
-        tl.to("#scene-scanning", { y: -800, opacity: 0, duration: 0.7, ease: "power3.inOut" }, 19);
-        tl.set("#scene-cta", { opacity: 1, pointerEvents: "auto" }, 19.2);
-        tl.to("#text-seconds-later", { opacity: 1, y: 0, duration: 0.6 }, 19.5);
+        mainTimeline.to("#dashboard-metric-cards", { y: -10, duration: 0.6 }, 23.5);
 
         /* ==========================================================================
-           0:21 - 0:22 | ELASTIC NOTIFICATION MODAL SLIDE UP INLINE DISPLAY
+           0:26 - 0:30 | DIAGRAN PARTS ORDER TOGGLE INTERFACE CONNECTIONS EXECUTION
            ========================================================================== */
-        tl.to("#text-seconds-later", { opacity: 0, y: -20, duration: 0.4 }, 21);
-        tl.to("#notification-card", { opacity: 1, y: 0, duration: 0.8, ease: "back.out(1.4)" }, 21.2);
+        mainTimeline.to("#dashboard-metric-cards", { opacity: 0, y: -30, duration: 0.3 }, 26);
+        mainTimeline.set("#integration-panel", { display: "flex" }, 26.1);
+        mainTimeline.to("#integration-panel", { opacity: 1, duration: 0.4 }, 26.2);
+        // Cursor tracking vectors targeted to press button matrix layout node bounding coordinate coordinates
+        mainTimeline.to("#dashboard-cursor", { opacity: 1, top: "45%", left: "40%", duration: 0.9 }, 26.5);
+        mainTimeline.to("#connect-btn", { backgroundColor: "#22c55e", textColor: "#000000", text: "Connected", duration: 0.2 }, 28);
+        mainTimeline.to("#dashboard-cursor", { opacity: 0, duration: 0.2 }, 28.5);
 
         /* ==========================================================================
-           0:22 - 0:24 | CURSOR CTA AUTOMATED CLICK HOVER SEQUENCE
+           0:30 - 0:33 | CALENDAR SCHEDULER MATRIX DATA UPWARD TRANSITION
            ========================================================================== */
-        // Repositioning virtual cursor pointer vector to overlay exact center bounding targets coordinates of CTA button
-        tl.set("#virtual-cursor", { top: "80%", left: "80%", opacity: 1 }, 22);
-        tl.to("#virtual-cursor", { top: "58%", left: "54%", duration: 0.8, ease: "power2.inOut" }, 22.2);
-        // Hover state color transformation triggers simulation
-        tl.to("#cta-btn", { backgroundColor: "#5b21b6", scale: 0.98, duration: 0.15, yoyo: true, repeat: 1 }, 23);
-        tl.to("#virtual-cursor", { opacity: 0, duration: 0.2 }, 23.3);
+        mainTimeline.to("#integration-panel", { opacity: 0, duration: 0.3 }, 30);
+        mainTimeline.set("#integration-panel", { display: "none" }, 30.3);
+        mainTimeline.set("#calendar-panel", { display: "flex" }, 30.3);
+        mainTimeline.to("#calendar-panel", { opacity: 1, duration: 0.4 }, 30.4);
+        mainTimeline.to("#moving-bay-card", { opacity: 1, y: 0, duration: 0.7, ease: "back.out(1.2)" }, 31.2);
 
         /* ==========================================================================
-           0:24 - 0:25 | 4-POINT STAR POP SPARKLE COMPOSITION EXIT VECTOR
+           0:33 - 0:35 | MODAL SMART INVOICING CARD ELASTIC ENTRY CAPTURE
            ========================================================================== */
-        tl.to("#notification-card", { opacity: 0, scale: 0.8, duration: 0.4 }, 24);
-        tl.to("#star-element", { opacity: 1, scale: 1, rotation: 45, duration: 0.5, ease: "back.out(2)" }, 24.1);
-        tl.to("#star-element", { scale: 0, opacity: 0, duration: 0.3 }, 24.7);
+        mainTimeline.to("#invoice-modal-card", { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.3)" }, 33.2);
 
         /* ==========================================================================
-           0:25 - 0:27 | SLIDE LEFT TRANSITION ENTRY INTO DASHBOARD ECOSYSTEM
+           0:35 - 0:37 | REAL-TIME AUTOMATED CONTEXT TYPEWRITER SERVICE WRITING
            ========================================================================== */
-        tl.set("#scene-dashboard", { opacity: 1, pointerEvents: "auto" }, 25);
-        // Canvas global horizontal translation push logic shift mapping sequences
-        tl.fromTo("#scene-dashboard", { x: "100%" }, { x: "0%", duration: 0.8, ease: "power4.out" }, 25.1);
+        mainTimeline.to("#invoice-writing-text", { text: "Labor: 2.5 hrs. Part #AX-410 applied automatically.", duration: 1.4, ease: "none" }, 35.1);
 
         /* ==========================================================================
-           0:27 - 0:29 | USER PERSONALIZATION REVEAL & MOUSE CURSOR GLIDE
+           0:37 - 0:41 | DISMISS MODAL SWITCH ENTRY OVER TO MECHANIC NODES LIST
            ========================================================================== */
-        tl.to("#dashboard-user", { opacity: 1, duration: 0.5 }, 27.2);
-        tl.set("#virtual-cursor", { top: "10%", left: "90%", opacity: 1 }, 27);
-        // Drag processing cursor to target ledger table row block coordinate coordinates 
-        tl.to("#virtual-cursor", { top: "25%", left: "45%", duration: 1, ease: "power3.inOut" }, 27.5);
+        mainTimeline.to("#invoice-modal-card", { opacity: 0, scale: 0.8, duration: 0.3 }, 37);
+        mainTimeline.to("#calendar-panel", { opacity: 0, duration: 0.3 }, 37);
+        mainTimeline.set("#calendar-panel", { display: "none" }, 37.3);
+        mainTimeline.set("#mechanic-panel", { display: "flex" }, 37.3);
+        mainTimeline.to("#mechanic-panel", { opacity: 1, duration: 0.4 }, 37.4);
+        // Animate checkbox pop sequences scaling elements
+        mainTimeline.to(".checkbox-node", { backgroundColor: "#22c55e", borderColor: "#22c55e", text: "✓", fontClass: "text-black", stagger: 0.2, duration: 0.3 }, 38.5);
 
         /* ==========================================================================
-           0:29 - 0:31 | DRAFT BADGE UPDATE SELECTION MOUSE DOWN PRESS
+           0:41 - 0:44 | THROUGHPUT CONTAINER SLIDE BAR CHARTS SCALE FILL IN
            ========================================================================== */
-        tl.to("#ledger-row", { backgroundColor: "#faf5ff", borderColor: "#d8b4fe", duration: 0.2 }, 29);
-        tl.to("#virtual-cursor", { scale: 0.8, duration: 0.15, yoyo: true, repeat: 1 }, 29.1);
-        tl.to("#review-panel-form", { opacity: 1, x: 0, duration: 0.6 }, 29.3);
+        mainTimeline.to("#mechanic-panel", { opacity: 0, duration: 0.3 }, 41);
+        mainTimeline.set("#mechanic-panel", { display: "none" }, 41.3);
+        mainTimeline.set("#throughput-panel", { display: "flex" }, 41.3);
+        mainTimeline.to("#throughput-panel", { opacity: 1, duration: 0.4 }, 41.4);
+        mainTimeline.to("#bar-chart-1", { width: "85%", duration: 0.8 }, 42.1);
+        mainTimeline.to("#bar-chart-2", { width: "94%", duration: 0.8 }, 42.4);
 
         /* ==========================================================================
-           0:31 - 0:33 | SPLIT SCREEN SPLIT VIEW AUTO SCROLL VALIDATION PROCESSING
+           0:44 - 0:47 | MOBILE SCREEN ROLL-UP ODOMETER VALUE TRANSFER MATRIX
            ========================================================================== */
-        tl.to("#form-scroll-nodes > div", {
-            backgroundColor: "#f0fdf4",
-            borderColor: "#bbf7d0",
-            stagger: 0.2,
-            duration: 0.4
-        }, 31);
-        // Auto scroll emulation simulation macro update parameters tracking properties node boundaries
-        tl.to("#review-panel-form", { scrollTop: 80, duration: 1.2, ease: "power1.inOut" }, 31.2);
+        mainTimeline.to("#scene-dashboard", { opacity: 0, scale: 0.95, duration: 0.5 }, 44);
+        mainTimeline.set("#scene-mobile", { opacity: 1, pointerEvents: "auto" }, 44.3);
+        mainTimeline.to("#phone-mockup", { scale: 1, y: 0, duration: 0.7, ease: "power3.out" }, 44.5);
+        mainTimeline.to("#phone-odometer-text", { text: "$3,400", duration: 1.5, ease: "power2.inOut" }, 45.2);
 
         /* ==========================================================================
-           0:33 - 0:35 | SUB-CORNER FOCUS FIRM PRESS SEND FOR APPROVAL CTA
+           0:47 - 0:50 | SMARTPHONE LOCKSCREEN OVERLAY RECEIVED NOTIFICATION ELEMENT
            ========================================================================== */
-        tl.to("#approval-box-cta", { opacity: 1, y: 0, duration: 0.5 }, 33);
-        tl.to("#virtual-cursor", { top: "90%", left: "45%", duration: 0.7, ease: "power2.inOut" }, 33.3);
-        tl.to("#approval-box-cta div:last-child", { scale: 0.95, opacity: 0.8, duration: 0.15, yoyo: true, repeat: 1 }, 34);
-        tl.to("#virtual-cursor", { opacity: 0, duration: 0.2 }, 34.3);
+        mainTimeline.set("#phone-screen-lock", { display: "flex" }, 47);
+        mainTimeline.to("#phone-screen-lock", { opacity: 1, duration: 0.4 }, 47.1);
+        mainTimeline.to("#push-notification-row", { opacity: 1, y: 0, duration: 0.5, ease: "back.out(1.2)" }, 47.8);
 
         /* ==========================================================================
-           0:35 - 0:37 | REVERT TO VIOLET ENV USER PIPELINE PROFILE SLIDE UP
+           0:50 - 0:53 | APP EXPANSION DIRECT TOUCH SELECTION TRACK PACK CHIPPINGS
            ========================================================================== */
-        tl.to("#scene-dashboard", { opacity: 0, y: -50, duration: 0.5 }, 35);
-        tl.set("#scene-success", { opacity: 1, pointerEvents: "auto" }, 35.2);
-        tl.to(".success-profile", { opacity: 1, y: 0, stagger: 0.2, duration: 0.6, ease: "back.out(1.5)" }, 35.4);
+        mainTimeline.set("#phone-screen-delivery", { display: "flex" }, 50);
+        mainTimeline.to("#phone-screen-delivery", { opacity: 1, duration: 0.4 }, 50.3);
+        mainTimeline.to("#track-delivery-btn", { scale: 0.96, yoyo: true, repeat: 1, duration: 0.15 }, 51.5);
 
         /* ==========================================================================
-           0:37 - 0:38 | MESSAGE CAPSULE PULSE INTERFACE GLOW TRANSFORMATION
+           0:53 - 0:56 | LIVE WORKSHOP MONITOR SELECTION HIGHLIGHTS TRANSITIONS
            ========================================================================== */
-        tl.to("#message-capsule", { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.2)" }, 37);
-        // Execute draw paths loop cycle calculation rules arrays natively via direct css stroke adjustments
-        tl.to("#success-ring", { strokeDashoffset: 0, duration: 0.8, ease: "power1.inOut" }, 37.3);
-        tl.to("#loading-ring", { opacity: 0, duration: 0.2 }, 37.8);
-        tl.set("#capsule-check", { opacity: 1 }, 37.9);
-        tl.to("#capsule-text", { text: "Payment approved", duration: 0.4 }, 37.9);
-        tl.to("#message-capsule", { keyframes: [{scale: 1.03, duration: 0.2}, {scale: 1, duration: 0.2}], ease: "power2.out"}, 38);
+        mainTimeline.to("#scene-mobile", { opacity: 0, xPercent: -20, duration: 0.5 }, 53);
+        mainTimeline.set("#scene-planner", { opacity: 1, pointerEvents: "auto" }, 53.3);
+        mainTimeline.from(".planner-grid-cell", { scale: 0.9, opacity: 0, stagger: 0.1, duration: 0.5 }, 53.5);
 
         /* ==========================================================================
-           0:38 - 0:40 | FLAT CIRCULAR COUNTDOWN LOADER SUCCESS COMPLETION
+           0:56 - 0:59 | BAY CELL TARGET CLOSE-UP POPPING BRAND LABELS ICONS VECTOR
            ========================================================================== */
-        tl.to(".success-profile", { opacity: 0, scale: 0.7, duration: 0.3 }, 38.5);
-        tl.to("#capsule-text", { text: "Payment sent", duration: 0.4 }, 39);
+        mainTimeline.to("#camera-rig", { scale: 1.2, xPercent: -15, yPercent: -10, duration: 0.6 }, 56);
+        mainTimeline.to("#brand-logos-pop-wrapper", { opacity: 1, scale: 1, duration: 0.4 }, 56.5);
+        mainTimeline.from("#brand-logos-pop-wrapper > span", { scale: 0, stagger: 0.1, duration: 0.5, ease: "back.out(2)" }, 56.8);
 
         /* ==========================================================================
-           0:40 - 0:41 | WIDGET DROPDOWN CASCADE COMPONENT FALL WITH BOUNCE
+           0:59 - 1:03 | PANS BACK AUTOMATED CUSTOMER RETENTION SELECTION FORM TRIGGER
            ========================================================================== */
-        tl.to("#message-capsule", { y: 30, duration: 0.4, ease: "power2.in" }, 40);
-        tl.to("#download-btn", { opacity: 1, y: 0, duration: 0.6, ease: "bounce.out" }, 40.3);
+        mainTimeline.to("#camera-rig", { scale: 1, xPercent: 0, yPercent: 0, duration: 0.6 }, 59);
+        mainTimeline.to("#scene-planner", { opacity: 0, duration: 0.4 }, 59);
+        mainTimeline.set("#scene-retention", { opacity: 1, pointerEvents: "auto" }, 59.3);
 
         /* ==========================================================================
-           0:41 - 0:43 | KINETIC STACCATO MANIFESTO TEXT PUNCH ACCENTS
+           1:03 - 1:06 | DROPDOWN DRAWER EXPANSION AUTOMATED MESSAGING INJECTION
            ========================================================================== */
-        tl.to("#scene-success", { opacity: 0, duration: 0.4 }, 41);
-        tl.set("#scene-outro", { opacity: 1, pointerEvents: "auto" }, 41.2);
-        
-        // Exact rhythmically timed type loops mapping expressions variables to timeline positions parameters
-        tl.to("#manifesto-text", { text: "Save time.", duration: 0.4 }, 41.4);
-        tl.to("#manifesto-text", { text: "Save time. Avoid errors.", duration: 0.5 }, 42);
-        tl.to("#manifesto-text", { text: "Save time. Avoid errors. Stay in control.", duration: 0.6 }, 42.7);
+        mainTimeline.to("#retention-dropdown-drawer", { opacity: 1, h: "auto", duration: 0.4 }, 103);
+        mainTimeline.to("#dropdown-selected-val", { text: "6-Month Reminder", duration: 0.2 }, 104);
+        mainTimeline.to("#retention-dropdown-drawer", { opacity: 0, h: 0, duration: 0.2 }, 104.3);
+        mainTimeline.to("#retention-typing-payload", { text: "Time for your scheduled oil change at Autodots...", duration: 1.2, ease: "none" }, 104.6);
 
         /* ==========================================================================
-           0:43 - 0:46 | FINAL BRAND SCENE RESOLUTION GLOW RIBBON LOOP FADE OUT
+           1:06 - 1:09 | GROSS PROFIT NODE INTERFACE SELECTION TRANSFORM LAYER SHIFT
            ========================================================================== */
-        tl.to("#manifesto-text", { opacity: 0, y: -20, duration: 0.4 }, 43.5);
-        tl.to("#final-brand-block", { opacity: 1, scale: 1, duration: 1, ease: "power4.out" }, 43.8);
-        
-        // Endless continuous aesthetic loop rotation tracking parameters on the geometry ribbon path 
-        gsap.to("#ribbon-path", { strokeDashoffset: 200, duration: 4, repeat: -1, ease: "linear" });
-        
-        // Absolute master termination video fade sequence
-        tl.to("#video-canvas", { opacity: 0, duration: 1.2, ease: "power2.inOut" }, 44.8);
+        mainTimeline.to("#scene-retention", { opacity: 0, yPercent: 20, duration: 0.5 }, 106);
+        mainTimeline.set("#scene-analytics", { opacity: 1, pointerEvents: "auto" }, 106.3);
 
+        /* ==========================================================================
+           1:09 - 1:12 | LINE TREND CHART PLOTS VECTOR DRAW PATH OPERATIONS
+           ========================================================================== */
+        mainTimeline.to("#analytics-vector-stroke", { strokeDashoffset: 0, duration: 2, ease: "power2.inOut" }, 109.2);
+
+        /* ==========================================================================
+           1:12 - 1:15 | FOUR CAM VIEWPORTS GRID SYNCHRONIZED SHRINKAGE MATRIX CONVENE
+           ========================================================================== */
+        mainTimeline.to("#scene-analytics", { opacity: 0, duration: 0.4 }, 112);
+        mainTimeline.set("#scene-matrix-grid", { opacity: 1, pointerEvents: "auto" }, 112.3);
+        mainTimeline.to(".matrix-grid-viewport", { scale: 1, stagger: 0.08, duration: 0.6, ease: "back.out(1.1)" }, 112.5);
+
+        /* ==========================================================================
+           1:15 - 1:18 | SINGLE SEARCH FIELD INTERFACE CLEAR TYPEWRITER BACKSPACE
+           ========================================================================== */
+        mainTimeline.to("#scene-matrix-grid", { opacity: 0, scale: 0.9, duration: 0.4 }, 115);
+        mainTimeline.set("#scene-ai-chat", { opacity: 1, pointerEvents: "auto" }, 115.3);
+        mainTimeline.to("#ai-search-field-box", { text: "Average repair time?", duration: 0.8 }, 115.5);
+        // Backspace text elimination sequence rule loop variables
+        mainTimeline.to("#ai-search-field-box", { text: "", duration: 0.5, ease: "none" }, 116.8);
+        mainTimeline.to("#ai-search-field-box", { text: "What is our highest-grossing service?", duration: 1, ease: "none" }, 117.4);
+
+        /* ==========================================================================
+           1:18 - 1:22 | AI CHAT STREAMING CONTAINER CHAT BUBBLES PUSH ACTIONS
+           ========================================================================== */
+        mainTimeline.to("#ai-chat-bubbles-framework", { opacity: 1, y: 0, duration: 0.5 }, 118.5);
+        mainTimeline.to("#ai-response-text-stream", { text: "Based on your Q2 data, brake replacements yielded the highest margin...", duration: 2, ease: "none" }, 119.2);
+
+        /* ==========================================================================
+           1:22 - 1:25 | AVATARS SCALING VERTICAL DRIFT CONTAINER TRACKING PLOTS
+           ========================================================================= */
+        mainTimeline.to("#scene-ai-chat", { opacity: 0, duration: 0.4 }, 122);
+        mainTimeline.set("#scene-outro", { opacity: 1, pointerEvents: "auto" }, 122.3);
+        mainTimeline.from(".outro-node", { y: 100, scale: 0, opacity: 0, stagger: 0.15, duration: 1.4, ease: "power2.out" }, 122.5);
+
+        /* ==========================================================================
+           1:25 - 1:28 | OUTRO RESOLUTION CENTRAL CORPORATE BRAND PACK ELASTIC SETTLE
+           ========================================================================== */
+        mainTimeline.to("#outro-brand-lockup-wrapper", { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.2)" }, 125.2);
+
+        /* ==========================================================================
+           1:28 - 1:31 | PRIMARY REDIRECT CTA DEPRESS GLOW ABSOLUTE FADE OUT TERMINATION
+           ========================================================================== */
+        mainTimeline.to("#outro-final-cta-btn", { opacity: 1, y: 0, duration: 0.6, ease: "back.out(1.5)" }, 128);
+        // Mouse click compression simulation rule variables tracker parameters
+        mainTimeline.to("#outro-final-cta-btn", { scale: 0.95, duration: 0.15, yoyo: true, repeat: 1 }, 129.2);
+        mainTimeline.to("#video-canvas", { opacity: 0, duration: 1, ease: "power2.inOut" }, 130);
     </script>
 </body>
 </html>
